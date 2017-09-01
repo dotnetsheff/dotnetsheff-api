@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "test": {
+            "matchCondition": {
+                "route": "/test"
+            },
+            "responseOverrides": {
+                "response.statusCode": "200",
+                "response.body": "{\r\n    \"everythingIs\": \"awesome\"\r\n}"
+            }
+        }
+    }
+}
