@@ -1,0 +1,7 @@
+version: "2.0.0-alpha{build}"
+
+build:
+  parallel: true
+  project: dotnetsheff.Api.sln
+  publish_azure: true
+
