@@ -3,6 +3,8 @@ version: "2.0.0-alpha{build}"
 image: Visual Studio 2017
 
 install:
+  - ps: Invoke-WebRequest -Uri https://visualstudiogallery.msdn.microsoft.com/e3705d94-7cc3-4b79-ba7b-f43f30774d28/file/263230/9/Microsoft.VisualStudio.Web.Azure.AzureFunctions.vsix -OutFile c:\downloads\Microsoft.VisualStudio.Web.Azure.AzureFunctions.vsix
+  - VSIXInstaller.exe /quiet c:\downloads\Microsoft.VisualStudio.Web.Azure.AzureFunctions.vsix
   - dotnet restore
 
 build:
