@@ -1,5 +1,7 @@
 version: "2.0.0-alpha{build}"
 
+image: Visual Studio 2017
+
 build:
   parallel: true
   project: dotnetsheff.Api.sln
