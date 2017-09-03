@@ -1,13 +1,90 @@
 {
     "$schema": "http://json.schemastore.org/proxies",
     "proxies": {
-        "test": {
+        "APIs": {
             "matchCondition": {
-                "route": "/test"
+                "route": "/api/{*restOfPath}"
             },
+            "backendUri": "https://%BackendHost%/api/{restOfPath}",
             "responseOverrides": {
-                "response.statusCode": "200",
-                "response.body": "{\r\n    \"everythingIs\": \"awesome\"\r\n}"
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website CSS": {
+            "matchCondition": {
+                "route": "/css/{*restOfPath}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/css/{*restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website Root": {
+            "matchCondition": {
+                "route": "/",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/index.html",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website RSS Feed": {
+            "matchCondition": {
+                "route": "/feed.xml",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/feed.xml",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website Images": {
+            "matchCondition": {
+                "route": "/images/{*restOfPath}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/images/{restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website JS": {
+            "matchCondition": {
+                "route": "/js/{*restOfPath}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/js/{restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "404 Not Found": {
+            "matchCondition": {
+                "route": "/{*restOfPath}"
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/404.html",
+            "responseOverrides": {
+                "response.statusCode": "404",
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
             }
         }
     }
