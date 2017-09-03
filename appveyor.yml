@@ -3,6 +3,7 @@ version: "2.0.0-alpha{build}"
 image: Visual Studio 2017
 
 install:
+  - "\"%ProgramFiles(x86)%\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe\" start"
   - npm i -g azure-functions-core-tools
   - dotnet restore
 
