@@ -2,6 +2,8 @@ version: "2.0.0-alpha{build}"
 
 image: Visual Studio 2017
 
+configuration: Release
+
 install:
   - "\"%ProgramFiles(x86)%\\Microsoft SDKs\\Azure\\Storage Emulator\\AzureStorageEmulator.exe\" start"
   - npm i -g azure-functions-core-tools
