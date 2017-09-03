@@ -10,6 +10,8 @@ install:
 build:
   parallel: true
   project: dotnetsheff.Api.sln
-  publish_azure: true
-  publish_wap: true
+
+artifacts:
+  - path: src\dotnetsheff.Api\bin\$(configuration)\net461
+    name: dotnetsheff.Api
 
