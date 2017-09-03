@@ -11,4 +11,5 @@ build:
   parallel: true
   project: dotnetsheff.Api.sln
   publish_azure: true
+  publish_wap: true
 
