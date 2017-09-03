@@ -78,7 +78,7 @@ namespace dotnetsheff.Api.FunctionalTests.Tests
         public void Dispose()
         {
             _stubHttp.Dispose();
-            _azureFunctionsStartup?.Stop();
+            _azureFunctionsStartup.Stop();
         }
     }
 }

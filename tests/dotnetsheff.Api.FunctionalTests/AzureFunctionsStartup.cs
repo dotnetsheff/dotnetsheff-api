@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace dotnetsheff.Api.FunctionalTests
 {
-    public class AzureFunctionsStartup : IDisposable
+    public class AzureFunctionsStartup
     {
         private Process _process;
         private readonly int _port;
@@ -55,13 +55,11 @@ namespace dotnetsheff.Api.FunctionalTests
 
         public void Stop()
         {
-            _process.Kill();
-        }
-
-        public void Dispose()
-        {
-            Stop();
-            _process?.Dispose();
+            var processesByName = Process.GetProcessesByName("func");
+            foreach (var process in processesByName)
+            {
+                process.Kill();
+            }
         }
     }
 }
