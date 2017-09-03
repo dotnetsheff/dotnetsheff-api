@@ -11,19 +11,6 @@
                 "response.headers.Vary": "Accept-Encoding"
             }
         },
-        "Website CSS": {
-            "matchCondition": {
-                "route": "/css/{*restOfPath}",
-                "methods": [
-                    "GET"
-                ]
-            },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/css/{*restOfPath}",
-            "responseOverrides": {
-                "response.headers.Cache-Control": "public,max-age=86400",
-                "response.headers.Vary": "Accept-Encoding"
-            }
-        },
         "Website Root": {
             "matchCondition": {
                 "route": "/",
@@ -37,14 +24,14 @@
                 "response.headers.Vary": "Accept-Encoding"
             }
         },
-        "Website RSS Feed": {
+        "Website CSS": {
             "matchCondition": {
-                "route": "/feed.xml",
+                "route": "/css/{*restOfPath}",
                 "methods": [
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/feed.xml",
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/css/{*restOfPath}",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
@@ -71,6 +58,19 @@
                 ]
             },
             "backendUri": "https://dotnetsheff.blob.core.windows.net/website/js/{restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website RSS Feed": {
+            "matchCondition": {
+                "route": "/feed.xml",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/feed.xml",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
