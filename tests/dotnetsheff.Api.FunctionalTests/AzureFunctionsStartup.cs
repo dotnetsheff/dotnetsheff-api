@@ -32,9 +32,8 @@ namespace dotnetsheff.Api.FunctionalTests
             mode = "Release";
 #endif
             var funcCliExe = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData), @"Azure.Functions.Cli\1.0.0\func.exe");
-
-        
+                Environment.SpecialFolder.ApplicationData), @"npm\func.cmd");
+            
             var processStartInfo = new ProcessStartInfo
             {
                 FileName = funcCliExe,
