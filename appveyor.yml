@@ -14,6 +14,6 @@ build:
   project: dotnetsheff.Api.sln
 
 artifacts:
-  - path: src\dotnetsheff.Api\bin\$(configuration)\net461
+  - path: src\dotnetsheff.Api\bin\$(configuration)\net462
     name: dotnetsheff.Api
 
