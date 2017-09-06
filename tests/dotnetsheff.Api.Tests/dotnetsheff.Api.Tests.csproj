@@ -1,20 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="4.19.4" />
-    <PackageReference Include="HttpMock" Version="2.1.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="AutoFixture" Version="3.50.6" />
     <PackageReference Include="xUnit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <ProjectReference Include="..\..\src\dotnetsheff.Api\dotnetsheff.Api.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
+
 </Project>

@@ -14,6 +14,6 @@ namespace dotnetsheff.Api.FunctionalTests
 
         public string Link { get; set; }
 
-        public string Description { get; set; }
+        public string ShortDescription { get; set; }
     }
 }

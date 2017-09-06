@@ -1,12 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.2" />
-    <PackageReference Include="refit" Version="4.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
@@ -21,5 +16,11 @@
     <None Update="proxies.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.5.2" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="refit" Version="4.0.1" />
   </ItemGroup>
 </Project>

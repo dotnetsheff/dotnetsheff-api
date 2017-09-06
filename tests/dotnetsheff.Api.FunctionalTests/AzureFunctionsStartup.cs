@@ -38,7 +38,7 @@ namespace dotnetsheff.Api.FunctionalTests
             {
                 FileName = funcCliExe,
                 Arguments = $"host start -p {_port}",
-                WorkingDirectory =$@"{solutionDir}\src\dotnetsheff.Api\bin\{mode}\net461\",
+                WorkingDirectory =$@"{solutionDir}\src\dotnetsheff.Api\bin\{mode}\net462\",
                 WindowStyle = ProcessWindowStyle.Normal,
                 UseShellExecute = false,
             };

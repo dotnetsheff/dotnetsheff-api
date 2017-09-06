@@ -43,7 +43,7 @@ namespace dotnetsheff.Api.FunctionalTests.Tests
         ""time"": {new DateTimeOffset(_expectedEvent.Time).ToUnixTimeMilliseconds()},
         ""yes_rsvp_count"": {_expectedEvent.YesRsvpCount},
         ""link"": ""{_expectedEvent.Link}"",
-        ""description"": ""{_expectedEvent.Description}""
+        ""description"": ""{_expectedEvent.ShortDescription}""
     }}
 ]")
                 .OK();

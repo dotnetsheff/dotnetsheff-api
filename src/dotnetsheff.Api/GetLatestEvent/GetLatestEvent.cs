@@ -1,10 +1,14 @@
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Text;
 using System.Threading.Tasks;
-using dotnetsheff.Api.Meetup;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Data.Edm.Csdl;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace dotnetsheff.Api.GetLatestEvent
 {
@@ -16,14 +20,18 @@ namespace dotnetsheff.Api.GetLatestEvent
             TraceWriter log)
         {
             log.Info("Getting next event");
-            var meetupSettings = new MeetupSettings();
-            var api = new MeetupApiFactory(new MeetupSettings()).Create();
-            var nextEventQuery = new NextEventQuery(api, "dotnetsheff", meetupSettings.ApiKey);
+
+            var nextEventQuery = QueryFactory.CreateNextEventQuery();
 
             var @event = await nextEventQuery.Execute();
 
-            return req.CreateResponse(HttpStatusCode.OK, @event);
+            var convertor = new EventToNextEventConvertor(new EventDescriptionShortener());
+            var nextEvent = convertor.Convert(@event);
 
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(nextEvent), Encoding.UTF8, "application/json")
+            };
         }
     }
 }
