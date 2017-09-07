@@ -24,6 +24,19 @@
                 "response.headers.Vary": "Accept-Encoding"
             }
         },
+        "Website Pages": {
+            "matchCondition": {
+                "route": "/pages/{*restOfPath}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/pages/{restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
         "Website CSS": {
             "matchCondition": {
                 "route": "/css/{*restOfPath}",
@@ -71,6 +84,19 @@
                 ]
             },
             "backendUri": "https://dotnetsheff.blob.core.windows.net/website/feed.xml",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website Icon": {
+            "matchCondition": {
+                "route": "/favicon.ico",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/favicon.ico",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
