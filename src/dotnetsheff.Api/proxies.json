@@ -8,7 +8,9 @@
             "backendUri": "https://%BackendHost%/api/{restOfPath}",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
-                "response.headers.Vary": "Accept-Encoding"
+                "response.headers.Vary": "Accept-Encoding",
+                "response.headers.expires": "",
+                "response.headers.pragma": ""
             }
         },
         "Website Root": {
