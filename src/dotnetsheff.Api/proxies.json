@@ -26,12 +26,12 @@
         },
         "Website Pages": {
             "matchCondition": {
-                "route": "/pages/{*restOfPath}",
+                "route": "/pages/{page}",
                 "methods": [
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/pages/{restOfPath}",
+            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/pages/{page}/index.html",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
