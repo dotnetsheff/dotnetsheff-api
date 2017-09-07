@@ -50,7 +50,7 @@ namespace dotnetsheff.Api.FunctionalTests
 
             _process = Process.Start(processStartInfo);
 
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
         }
 
         public void Stop()
