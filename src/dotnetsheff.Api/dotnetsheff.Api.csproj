@@ -18,9 +18,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.5.2" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="refit" Version="4.0.1" />
+    <PackageReference Include="System.Runtime" Version="4.3.0" />
   </ItemGroup>
 </Project>

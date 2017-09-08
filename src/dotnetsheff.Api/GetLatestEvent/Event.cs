@@ -1,6 +1,6 @@
 using System;
 
-namespace dotnetsheff.Api.Meetup
+namespace dotnetsheff.Api.GetLatestEvent
 {
     public class Event
     {

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnetsheff.Api", "src\dotn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnetsheff.Api.FunctionalTests", "tests\dotnetsheff.Api.FunctionalTests\dotnetsheff.Api.FunctionalTests.csproj", "{DEFEA581-F2A3-45A6-8DE3-41C83D01F63C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnetsheff.Api.Tests", "tests\dotnetsheff.Api.Tests\dotnetsheff.Api.Tests.csproj", "{8BCFBC6D-FB63-4FD0-BC5C-05C08EC9DFE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnetsheff.Api.Tests", "tests\dotnetsheff.Api.Tests\dotnetsheff.Api.Tests.csproj", "{8BCFBC6D-FB63-4FD0-BC5C-05C08EC9DFE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

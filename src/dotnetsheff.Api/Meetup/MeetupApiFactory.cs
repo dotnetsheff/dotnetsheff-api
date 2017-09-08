@@ -4,7 +4,7 @@ using Refit;
 
 namespace dotnetsheff.Api.Meetup
 {
-    internal class MeetupApiFactory
+    public class MeetupApiFactory : IMeetupApiFactory
     {
         private readonly IMeetupSettings _settings;
 

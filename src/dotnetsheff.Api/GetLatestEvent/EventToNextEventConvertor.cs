@@ -2,11 +2,11 @@ using dotnetsheff.Api.Meetup;
 
 namespace dotnetsheff.Api.GetLatestEvent
 {
-    public class EventToNextEventConvertor
+    public class EventToNextEventConvertor : IEventToNextEventConvertor
     {
-        private readonly EventDescriptionShortener _eventDescriptionShortener;
+        private readonly IEventDescriptionShortener _eventDescriptionShortener;
 
-        public EventToNextEventConvertor(EventDescriptionShortener eventDescriptionShortener)
+        public EventToNextEventConvertor(IEventDescriptionShortener eventDescriptionShortener)
         {
             _eventDescriptionShortener = eventDescriptionShortener;
         }

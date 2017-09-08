@@ -5,5 +5,7 @@ namespace dotnetsheff.Api.Meetup
         string BaseUri { get; }
 
         string ApiKey { get; }
+
+        string GroupName { get; }
     }
 }

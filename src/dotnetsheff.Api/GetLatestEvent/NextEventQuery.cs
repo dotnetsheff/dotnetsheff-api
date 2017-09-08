@@ -4,7 +4,7 @@ using dotnetsheff.Api.Meetup;
 
 namespace dotnetsheff.Api.GetLatestEvent
 {
-    public class NextEventQuery
+    public class NextEventQuery : INextEventQuery
     {
         private readonly IMeetupApi _meetupApi;
         private readonly string _group;

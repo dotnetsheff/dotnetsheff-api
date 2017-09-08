@@ -3,7 +3,7 @@ using HtmlAgilityPack;
 
 namespace dotnetsheff.Api.GetLatestEvent
 {
-    public class EventDescriptionShortener
+    public class EventDescriptionShortener : IEventDescriptionShortener
     {
         public string Shorten(string description)
         {

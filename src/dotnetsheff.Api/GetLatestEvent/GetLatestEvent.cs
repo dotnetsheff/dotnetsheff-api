@@ -21,12 +21,12 @@ namespace dotnetsheff.Api.GetLatestEvent
         {
             log.Info("Getting next event");
 
-            var nextEventQuery = QueryFactory.CreateNextEventQuery();
+            var nextEventQuery = Container.Instance.Resolve<INextEventQuery>();
+            var eventToNextEventConvertor = Container.Instance.Resolve<IEventToNextEventConvertor>();
 
             var @event = await nextEventQuery.Execute();
-
-            var convertor = new EventToNextEventConvertor(new EventDescriptionShortener());
-            var nextEvent = convertor.Convert(@event);
+ 
+            var nextEvent = eventToNextEventConvertor.Convert(@event);
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
