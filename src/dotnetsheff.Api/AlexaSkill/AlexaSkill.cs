@@ -40,7 +40,7 @@ namespace dotnetsheff.Api.AlexaSkill
                     var alexaSkillEventQuery = Container.Instance.Resolve<IAlexaSkillEventQuery>();
                     var @event = await alexaSkillEventQuery.Execute();
                     var speech = new SsmlOutputSpeech();
-                    speech.Ssml = $"<speak>The next dotnetsheff is <say-as interpret-as=\"date\">{@event.Time.Date:yyyyMMdd}</say-as>.";
+                    speech.Ssml = $"<speak>The next <sub alias=\"dot net sheff\">dotnetsheff</sub> is <say-as interpret-as=\"date\">{@event.Time.Date:yyyyMMdd}</say-as>.</speak>";
 
                     var finalResponse = ResponseBuilder.Tell(speech);
 
