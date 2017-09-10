@@ -1,7 +1,10 @@
 using Autofac;
+using Autofac.Core;
 using dotnetsheff.Api.AlexaSkill;
 using dotnetsheff.Api.GetLatestEvent;
 using dotnetsheff.Api.Meetup;
+using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Build.Framework;
 
 namespace dotnetsheff.Api
 {
@@ -18,6 +21,8 @@ namespace dotnetsheff.Api
             BuildGetLatestEventTypes(builder);
 
             builder.RegisterType<AlexaSkillEventQuery>().As<IAlexaSkillEventQuery>();
+
+            builder.RegisterType<EventSpeechlet>().AsSelf();
 
             _container = builder.Build();
         }
@@ -39,9 +44,9 @@ namespace dotnetsheff.Api
             builder.RegisterType<EventDescriptionShortener>().As<IEventDescriptionShortener>();
         }
 
-        public TService Resolve<TService>()
+        public TService Resolve<TService>(TraceWriter log)
         {
-            return _container.Resolve<TService>();
+            return _container.Resolve<TService>(TypedParameter.From(log));
         }
     }
 }

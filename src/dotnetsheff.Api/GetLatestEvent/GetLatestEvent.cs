@@ -21,8 +21,8 @@ namespace dotnetsheff.Api.GetLatestEvent
         {
             log.Info("Getting next event");
 
-            var nextEventQuery = Container.Instance.Resolve<INextEventQuery>();
-            var eventToNextEventConvertor = Container.Instance.Resolve<IEventToNextEventConvertor>();
+            var nextEventQuery = Container.Instance.Resolve<INextEventQuery>(log);
+            var eventToNextEventConvertor = Container.Instance.Resolve<IEventToNextEventConvertor>(log);
 
             var @event = await nextEventQuery.Execute();
  
