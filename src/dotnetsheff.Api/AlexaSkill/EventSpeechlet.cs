@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using AlexaSkillsKit.Authentication;
 using AlexaSkillsKit.Json;
 using AlexaSkillsKit.Speechlet;
 using AlexaSkillsKit.UI;
 using Microsoft.Azure.WebJobs.Host;
+using Refit;
 
 namespace dotnetsheff.Api.AlexaSkill
 {
@@ -12,11 +15,13 @@ namespace dotnetsheff.Api.AlexaSkill
     {
         private readonly TraceWriter _log;
         private readonly IAlexaSkillEventQuery _alexaSkillEventQuery;
+        private readonly INextEventSsmlGenerator _ssmlGenerator;
 
-        public EventSpeechlet(TraceWriter log, IAlexaSkillEventQuery alexaSkillEventQuery)
+        public EventSpeechlet(TraceWriter log, IAlexaSkillEventQuery alexaSkillEventQuery, INextEventSsmlGenerator ssmlGenerator)
         {
             _log = log;
             _alexaSkillEventQuery = alexaSkillEventQuery;
+            _ssmlGenerator = ssmlGenerator;
         }
 
         public override async Task<SpeechletResponse> OnIntentAsync(IntentRequest request, Session session)
@@ -26,9 +31,11 @@ namespace dotnetsheff.Api.AlexaSkill
             if (request.Intent.Name.Equals("GetNextEvent"))
             {
                 var @event = await _alexaSkillEventQuery.Execute();
-                
-                var ssml = $"<speak>The next <sub alias=\"dot net sheff\">dotnetsheff</sub> event is {@event.Name} on <say-as interpret-as=\"date\">{@event.Time.Date:yyyyMMdd}</say-as>.</speak>";
-                var speech = new SsmlOutputSpeech {Ssml = ssml};
+
+                var speech = new SsmlOutputSpeech
+                {
+                    Ssml = _ssmlGenerator.Generate(@event.Name, @event.Time)
+                };
                 
                 var response = new SpeechletResponse
                 {

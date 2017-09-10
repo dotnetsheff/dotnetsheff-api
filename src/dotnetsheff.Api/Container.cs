@@ -42,6 +42,8 @@ namespace dotnetsheff.Api
             builder.RegisterType<EventToNextEventConvertor>().As<IEventToNextEventConvertor>();
 
             builder.RegisterType<EventDescriptionShortener>().As<IEventDescriptionShortener>();
+
+            builder.RegisterType<NextEventSsmlGenerator>().As<INextEventSsmlGenerator>();
         }
 
         public TService Resolve<TService>(TraceWriter log)
