@@ -1,6 +1,6 @@
 using System;
 
-namespace dotnetsheff.Api.FunctionalTests
+namespace dotnetsheff.Api.FunctionalTests.Tests.AlexaSkill
 {
     public class Event
     {
@@ -13,7 +13,5 @@ namespace dotnetsheff.Api.FunctionalTests
         public int YesRsvpCount { get; set; }
 
         public string Link { get; set; }
-
-        public string ShortDescription { get; set; }
     }
 }

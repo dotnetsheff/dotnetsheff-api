@@ -10,7 +10,7 @@ namespace dotnetsheff.Api.FunctionalTests
 
         public AzureFunctionsFixture()
         {
-            _azureFunctionsStartup = new AzureFunctionsStartup(Port, MeetupSettings.MeetupApiBaseUri, MeetupSettings.MeetupApiKey);
+            _azureFunctionsStartup = new AzureFunctionsStartup(Port, MeetupSettings.MeetupApiBaseUri, MeetupSettings.MeetupApiKey, AlexaSettings.SkillId);
             _azureFunctionsStartup.Start();
         }
 

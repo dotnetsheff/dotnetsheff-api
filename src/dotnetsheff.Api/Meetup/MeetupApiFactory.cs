@@ -14,7 +14,7 @@ namespace dotnetsheff.Api.Meetup
         }
 
         public IMeetupApi Create()
-        {;
+        {
             var jsonSerializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver

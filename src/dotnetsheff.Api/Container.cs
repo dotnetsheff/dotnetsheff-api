@@ -44,6 +44,8 @@ namespace dotnetsheff.Api
             builder.RegisterType<EventDescriptionShortener>().As<IEventDescriptionShortener>();
 
             builder.RegisterType<NextEventSsmlGenerator>().As<INextEventSsmlGenerator>();
+
+            builder.RegisterType<AlexaSkillSettings>().As<IAlexaSkillSettings>();
         }
 
         public TService Resolve<TService>(TraceWriter log)

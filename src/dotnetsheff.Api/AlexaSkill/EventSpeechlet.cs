@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -16,12 +17,14 @@ namespace dotnetsheff.Api.AlexaSkill
         private readonly TraceWriter _log;
         private readonly IAlexaSkillEventQuery _alexaSkillEventQuery;
         private readonly INextEventSsmlGenerator _ssmlGenerator;
+        private readonly IAlexaSkillSettings _alexaSkillSettings;
 
-        public EventSpeechlet(TraceWriter log, IAlexaSkillEventQuery alexaSkillEventQuery, INextEventSsmlGenerator ssmlGenerator)
+        public EventSpeechlet(TraceWriter log, IAlexaSkillEventQuery alexaSkillEventQuery, INextEventSsmlGenerator ssmlGenerator, IAlexaSkillSettings alexaSkillSettings)
         {
             _log = log;
             _alexaSkillEventQuery = alexaSkillEventQuery;
             _ssmlGenerator = ssmlGenerator;
+            _alexaSkillSettings = alexaSkillSettings;
         }
 
         public override async Task<SpeechletResponse> OnIntentAsync(IntentRequest request, Session session)
@@ -77,7 +80,7 @@ namespace dotnetsheff.Api.AlexaSkill
         public override bool OnRequestValidation(SpeechletRequestValidationResult result, DateTime referenceTimeUtc,
             SpeechletRequestEnvelope requestEnvelope)
         {
-            if (requestEnvelope.Session.Application.Id != Environment.GetEnvironmentVariable("AlexaSkillId"))
+            if (requestEnvelope.Session.Application.Id != _alexaSkillSettings.ApplicationId)
             {
                 var message = $"Unknown alex skill application. id = '{requestEnvelope.Session.Application.Id}'";
                 _log.Warning(message);
@@ -85,6 +88,13 @@ namespace dotnetsheff.Api.AlexaSkill
                 return false;
             }
 
+            if (_alexaSkillSettings.AcceptInvalidAlexaSignature)
+            {
+                result &= ~ (SpeechletRequestValidationResult.NoSignatureHeader |
+                             SpeechletRequestValidationResult.NoCertHeader |
+                             SpeechletRequestValidationResult.InvalidSignature);
+            }
+            
             return base.OnRequestValidation(result, referenceTimeUtc, requestEnvelope);
         }
     }

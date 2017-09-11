@@ -11,13 +11,15 @@ namespace dotnetsheff.Api.FunctionalTests
         private readonly int _port;
         private readonly string _meetupApiBaseUri;
         private readonly string _meetupApiKey;
+        private readonly string _alexaSkillId;
         private Process _process;
 
-        public AzureFunctionsStartup(int port, string meetupApiBaseUri, string meetupApiKey)
+        public AzureFunctionsStartup(int port, string meetupApiBaseUri, string meetupApiKey, string alexaSkillId)
         {
             _port = port;
             _meetupApiBaseUri = meetupApiBaseUri;
             _meetupApiKey = meetupApiKey;
+            _alexaSkillId = alexaSkillId;
         }
 
         public void Start()
@@ -47,6 +49,9 @@ namespace dotnetsheff.Api.FunctionalTests
             processStartInfo.EnvironmentVariables["AzureWebJobsDashboard"] = "UseDevelopmentStorage=true";
             processStartInfo.EnvironmentVariables["MeetupApiBaseUri"] = _meetupApiBaseUri;
             processStartInfo.EnvironmentVariables["MeetupApiKey"] = _meetupApiKey;
+            processStartInfo.EnvironmentVariables["AcceptInvalidAlexaSignature"] = bool.TrueString;
+            processStartInfo.EnvironmentVariables["AlexaSkillId"] = _alexaSkillId;
+
 
             _process = Process.Start(processStartInfo);
 
