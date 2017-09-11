@@ -51,9 +51,7 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.GetNextEventTests
         {
             using (var httpClient = new HttpClient())
             {
-                string applicationId = Guid.NewGuid().ToString();
-                var content = new StringContent(BuildAlexaRequest(applicationId, new Guid().ToString(), "GetNextEvent"), Encoding.UTF8, "application/json");
-                var response = await httpClient.PostAsync($"http://localhost:{AzureFunctionsFixture.Port}/api/events/next", content);
+                var response = await httpClient.GetAsync($"http://localhost:{AzureFunctionsFixture.Port}/api/events/next");
 
                 response.EnsureSuccessStatusCode();
 
@@ -67,51 +65,6 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.GetNextEventTests
                 @event.ShouldBeEquivalentTo(_expectedEvent,
                     c => c.Using(new DateTimeWithinOneMillisecondEquivalencyStep()));
             }
-        }
-
-        public string BuildAlexaRequest(string applicationId, string sessionId, string intentName)
-        {
-            var json = $@"{{
-  ""session"": {{
-    ""new"": true,
-    ""sessionId"": ""SessionId.{sessionId}"",
-    ""application"": {{
-      ""applicationId"": ""{applicationId}""
-    }},
-    ""attributes"": {{}},
-    ""user"": {{
-      ""userId"": ""amzn1.ask.account.AAMAONSIFHEKEVSOFTISAWESOMEFNSOSNRI39FNGKNDFKJKSDGLKNLDNFGFJNGI3049RG9ERGENIDOFGNDFGFNOEA6TPUWY2Z3HTHM6NWH34CTZBQEBYSZUNAL2AW4GJELH7D6BK7QCJC5TD7ISHBOCWVR3F22HEYUMKQGQK6MNJY6VBROKNLENJUYDKF247ZM7ZWBXINPB5X4A""
-    }}
-  }},
-  ""request"": {{
-    ""type"": ""IntentRequest"",
-    ""requestId"": ""EdwRequestId.a071a50a-ba30-4d80-a5f9-606445d8a8ca"",
-    ""intent"": {{
-      ""name"": ""{intentName}"",
-      ""slots"": {{}}
-    }},
-    ""locale"": ""en-GB"",
-    ""timestamp"": ""2017-09-10T14:24:39Z""
-  }},
-  ""context"": {{
-    ""AudioPlayer"": {{
-      ""playerActivity"": ""IDLE""
-    }},
-    ""System"": {{
-      ""application"": {{
-        ""applicationId"": ""{applicationId}""
-      }},
-      ""user"": {{
-        ""userId"": ""amzn1.ask.account.AEZ2YYUKVTAFL6ZNJ4QT2E2KGXKCMATONC6DQQZMPQOGLO2XL5C64H724KFJG7CHT5TRU5NKKOSXCDF4AH23R6OEA6TPUWY2Z3HTHM6NWH34CTZBQEBYSZUNAL2AW4GJELH7D6BK7QCJC5TD7ISHBOCWVR3F22HEYUMKQGQK6MNJY6VBROKNLENJUYDKF247ZM7ZWBXINPB5X4A""
-      }},
-      ""device"": {{
-        ""supportedInterfaces"": {{}}
-      }}
-    }}
-  }},
-  ""version"": ""1.0""
-}}";
-            return json;
         }
 
         public void Dispose()
