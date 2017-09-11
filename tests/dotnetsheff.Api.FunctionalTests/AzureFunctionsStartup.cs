@@ -8,10 +8,10 @@ namespace dotnetsheff.Api.FunctionalTests
 {
     public class AzureFunctionsStartup
     {
-        private Process _process;
         private readonly int _port;
         private readonly string _meetupApiBaseUri;
         private readonly string _meetupApiKey;
+        private Process _process;
 
         public AzureFunctionsStartup(int port, string meetupApiBaseUri, string meetupApiKey)
         {

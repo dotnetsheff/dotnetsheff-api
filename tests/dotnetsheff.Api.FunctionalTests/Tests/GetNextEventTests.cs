@@ -11,27 +11,23 @@ using Xunit;
 
 namespace dotnetsheff.Api.FunctionalTests.Tests
 {
-    public class GetNextEventTests :IDisposable
+    [Collection(XUnitCollectionNames.ApiCollection)]
+    public class GetNextEventTests :  IDisposable
     {
-        private readonly AzureFunctionsStartup _azureFunctionsStartup;
-        private readonly int _port;
         private readonly IHttpServer _stubHttp;
-        private readonly Fixture _fixture;
         private readonly Event _expectedEvent;
 
         public GetNextEventTests()
         {
-            _fixture = new Fixture();
-            _expectedEvent = _fixture.Create<Event>();
+            var fixture = new Fixture();
+            _expectedEvent = fixture.Create<Event>();
             _expectedEvent.Time = _expectedEvent.Time.ToUniversalTime();
 
-            var meetupApiBaseUri = "http://localhost:9191";
-            var meetupApiKey = Guid.NewGuid().ToString();
-            _stubHttp = HttpMockRepository.At(meetupApiBaseUri);
+            _stubHttp = HttpMockRepository.At(MeetupSettings.MeetupApiBaseUri);
             _stubHttp.Stub(x => x.Get("/dotnetsheff/events"))
                 .WithParams(new Dictionary<string, string>()
                 {
-                    {"apiKey" , meetupApiKey },
+                    {"apiKey" , MeetupSettings.MeetupApiKey },
                     {"status" ,"upcoming" },
                     {"page" ,"1" },
                     {"omit" ,"created,status,updated,utc_offset,waitlist_count,venue,group,manual_attendance_count,visibility" },
@@ -45,13 +41,8 @@ namespace dotnetsheff.Api.FunctionalTests.Tests
         ""link"": ""{_expectedEvent.Link}"",
         ""description"": ""{_expectedEvent.ShortDescription}""
     }}
-]")
-                .OK();
+]").OK();
             _stubHttp.Start();
-
-            _port = 7075;
-            _azureFunctionsStartup = new AzureFunctionsStartup(_port, meetupApiBaseUri, meetupApiKey);
-            _azureFunctionsStartup.Start();         
         }
 
         [Fact]
@@ -59,7 +50,7 @@ namespace dotnetsheff.Api.FunctionalTests.Tests
         {
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"http://localhost:{_port}/api/events/next");
+                var response = await httpClient.GetAsync($"http://localhost:{AzureFunctionsFixture.Port}/api/events/next");
 
                 response.EnsureSuccessStatusCode();
 
@@ -78,7 +69,6 @@ namespace dotnetsheff.Api.FunctionalTests.Tests
         public void Dispose()
         {
             _stubHttp.Dispose();
-            _azureFunctionsStartup.Stop();
         }
     }
 }
