@@ -20,7 +20,7 @@
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/index.html",
+            "backendUri": "%StaticSiteBaseUri%index.html",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
@@ -33,7 +33,7 @@
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/pages/{page}/index.html",
+            "backendUri": "%StaticSiteBaseUri%pages/{page}/index.html",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
@@ -46,7 +46,7 @@
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/css/{restOfPath}",
+            "backendUri": "%StaticSiteBaseUri%css/{restOfPath}",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
@@ -59,7 +59,7 @@
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/images/{restOfPath}",
+            "backendUri": "%StaticSiteBaseUri%images/{restOfPath}",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
@@ -72,7 +72,7 @@
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/js/{restOfPath}",
+            "backendUri": "%StaticSiteBaseUri%js/{restOfPath}",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
@@ -85,7 +85,7 @@
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/feed.xml",
+            "backendUri": "%StaticSiteBaseUri%feed.xml",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
@@ -98,7 +98,7 @@
                     "GET"
                 ]
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/favicon.ico",
+            "backendUri": "%StaticSiteBaseUri%favicon.ico",
             "responseOverrides": {
                 "response.headers.Cache-Control": "public,max-age=86400",
                 "response.headers.Vary": "Accept-Encoding"
@@ -108,7 +108,7 @@
             "matchCondition": {
                 "route": "/{*restOfPath}"
             },
-            "backendUri": "https://dotnetsheff.blob.core.windows.net/website/404.html",
+            "backendUri": "%StaticSiteBaseUri%404.html",
             "responseOverrides": {
                 "response.statusCode": "404",
                 "response.headers.Cache-Control": "public,max-age=86400",
