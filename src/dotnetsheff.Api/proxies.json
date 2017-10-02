@@ -1,0 +1,119 @@
+{
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "APIs": {
+            "matchCondition": {
+                "route": "/api/{*restOfPath}"
+            },
+            "backendUri": "https://%BackendHost%/api/{restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding",
+                "response.headers.expires": "",
+                "response.headers.pragma": ""
+            }
+        },
+        "Website Root": {
+            "matchCondition": {
+                "route": "/",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "%StaticSiteBaseUri%index.html",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website Pages": {
+            "matchCondition": {
+                "route": "/pages/{page}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "%StaticSiteBaseUri%pages/{page}/index.html",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website CSS": {
+            "matchCondition": {
+                "route": "/css/{*restOfPath}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "%StaticSiteBaseUri%css/{restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website Images": {
+            "matchCondition": {
+                "route": "/images/{*restOfPath}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "%StaticSiteBaseUri%images/{restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website JS": {
+            "matchCondition": {
+                "route": "/js/{*restOfPath}",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "%StaticSiteBaseUri%js/{restOfPath}",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website RSS Feed": {
+            "matchCondition": {
+                "route": "/feed.xml",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "%StaticSiteBaseUri%feed.xml",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "Website Icon": {
+            "matchCondition": {
+                "route": "/favicon.ico",
+                "methods": [
+                    "GET"
+                ]
+            },
+            "backendUri": "%StaticSiteBaseUri%favicon.ico",
+            "responseOverrides": {
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        },
+        "404 Not Found": {
+            "matchCondition": {
+                "route": "/{*restOfPath}"
+            },
+            "backendUri": "%StaticSiteBaseUri%404.html",
+            "responseOverrides": {
+                "response.statusCode": "404",
+                "response.headers.Cache-Control": "public,max-age=86400",
+                "response.headers.Vary": "Accept-Encoding"
+            }
+        }
+    }
+}

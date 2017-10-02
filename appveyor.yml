@@ -1,0 +1,19 @@
+version: "2.0.0-alpha{build}"
+
+image: Visual Studio 2017
+
+configuration: Release
+
+install:
+  - "\"%ProgramFiles(x86)%\\Microsoft SDKs\\Azure\\Storage Emulator\\AzureStorageEmulator.exe\" start"
+  - npm i -g azure-functions-core-tools
+  - dotnet restore
+
+build:
+  parallel: true
+  project: dotnetsheff.Api.sln
+
+artifacts:
+  - path: src\dotnetsheff.Api\bin\$(configuration)\net462
+    name: dotnetsheff.Api
+

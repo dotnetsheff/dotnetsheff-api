@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+    "MeetupApiBaseUri": "https://api.meetup.com",
+    "MeetupApiKey": "",
+    "AlexaSkillId": ""
+  }
+}
