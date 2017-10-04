@@ -6,7 +6,7 @@ namespace dotnetsheff.Api.KeepAlive
     public static class KeepAlive
     {
         [FunctionName("KeepAlive")]
-        public static void Run([TimerTrigger("5 * * * *")]TimerInfo myTimer, TraceWriter log)
+        public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, TraceWriter log)
         {
             // Do nothing...
         }
