@@ -16,7 +16,7 @@ namespace dotnetsheff.Api.BuildWebsite
         };
 
         [FunctionName("BuildWebsite")]
-        public static async Task Run([TimerTrigger("0 0 5 * * ?")]TimerInfo myTimer, TraceWriter log)
+        public static async Task Run([TimerTrigger("0 0 5 1 * *")]TimerInfo myTimer, TraceWriter log)
         {
             var value = new
             {
