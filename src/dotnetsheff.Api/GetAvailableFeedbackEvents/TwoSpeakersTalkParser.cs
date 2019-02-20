@@ -1,19 +1,17 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace dotnetsheff.Api.GetAvailableFeedbackEvents
 {
-    public class TalkParser : ITalkParser
+    public class TwoSpeakersTalkParser : ITalkParser
     {
-        public IEnumerable<Talk> Parse(Event @event)
+        public IEnumerable<Talk> Parse(PastEvent @event)
         {
-            var twoSpeakersRegex = new Regex("This event will be split into two parts, (?<speaker1>.+) presenting (?<talk1>.+) and the second half will be (?<speaker2>.+) presenting (?<talk2>.+).");
+            var twoSpeakersRegex = new Regex("This event will be split into two parts, (?<speaker1>.+) presenting (?<talk1>.+) and the second half will be (?<speaker2>.+) presenting (?<talk2>.+).</p>");
 
             var twoSpeakerMatch = twoSpeakersRegex.Match(@event.Description);
 
-            if (!twoSpeakerMatch.Success) throw new NotImplementedException();
+            if (!twoSpeakerMatch.Success) yield break;
 
             var speaker1 = twoSpeakerMatch.Groups["speaker1"].Value;
             var speaker2 = twoSpeakerMatch.Groups["speaker2"].Value;

@@ -1,15 +1,15 @@
 using Autofac;
-using Autofac.Core;
 using dotnetsheff.Api.AlexaSkill;
+using dotnetsheff.Api.GetAvailableFeedbackEvents;
 using dotnetsheff.Api.GetLatestEvent;
 using dotnetsheff.Api.Meetup;
 using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Build.Framework;
 
 namespace dotnetsheff.Api
 {
     public class Container
     {
+        private const string GROUP_NAME = "dotnetsheff";
         private readonly IContainer _container;
 
         public static Container Instance { get; } = new Container();
@@ -18,7 +18,11 @@ namespace dotnetsheff.Api
         {
             ContainerBuilder builder = new ContainerBuilder();
 
+            BuildMeetupApi(builder);
+
             BuildGetLatestEventTypes(builder);
+
+            BuildGetAvailableFeedbackEvents(builder);
 
             builder.RegisterType<AlexaSkillEventQuery>().As<IAlexaSkillEventQuery>();
 
@@ -27,7 +31,15 @@ namespace dotnetsheff.Api
             _container = builder.Build();
         }
 
-        private static void BuildGetLatestEventTypes(ContainerBuilder builder)
+        private static void BuildGetAvailableFeedbackEvents(ContainerBuilder builder)
+        {
+            builder.RegisterType<TwoSpeakersTalkParser>().As<ITalkParser>();
+            builder.RegisterType<OneSpeakerTwoTalksParser>().As<ITalkParser>();
+
+            builder.Register(ctx => new LastEventsQuery(ctx.Resolve<IMeetupApi>(), GROUP_NAME, ctx.Resolve<IMeetupSettings>().ApiKey)).As<ILastEventsQuery>();
+        }
+
+        private static void BuildMeetupApi(ContainerBuilder builder)
         {
             builder.RegisterType<MeetupSettings>().As<IMeetupSettings>();
 
@@ -35,8 +47,11 @@ namespace dotnetsheff.Api
 
             builder.Register(ctx => ctx.Resolve<IMeetupApiFactory>().Create())
                 .As<IMeetupApi>();
+        }
 
-            builder.Register(ctx => new NextEventQuery(ctx.Resolve<IMeetupApi>(), "dotnetsheff", ctx.Resolve<IMeetupSettings>().ApiKey))
+        private static void BuildGetLatestEventTypes(ContainerBuilder builder)
+        {
+            builder.Register(ctx => new NextEventQuery(ctx.Resolve<IMeetupApi>(), GROUP_NAME, ctx.Resolve<IMeetupSettings>().ApiKey))
                 .As<INextEventQuery>();
 
             builder.RegisterType<EventToNextEventConvertor>().As<IEventToNextEventConvertor>();

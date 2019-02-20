@@ -4,7 +4,7 @@ namespace dotnetsheff.Api.GetAvailableFeedbackEvents
 {
     public interface ITalkParser
     {
-        IEnumerable<Talk> Parse(Event @event);
+        IEnumerable<Talk> Parse(PastEvent pastEvent);
     }
 
     public class Talk

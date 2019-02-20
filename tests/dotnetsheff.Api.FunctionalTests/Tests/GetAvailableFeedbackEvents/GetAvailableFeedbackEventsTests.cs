@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HttpMock;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using Ploeh.AutoFixture;
 using Xunit;
-using System.Linq;
 
 namespace dotnetsheff.Api.FunctionalTests.Tests.GetAvailableFeedbackEvents
 {
@@ -19,6 +16,10 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.GetAvailableFeedbackEvents
     {
         private readonly IHttpServer _stubHttp;
 
+        private const string EVENTS_RESPONSE =
+            @"[{""name"": ""Chocolatey with Gary Park and HTTP API patterns with Toby Henderson"",""description"":""<p>This event will be split into two parts, Gary Ewan Park presenting Adding a layer of Chocolate(y) and the second half will be Toby Henderson presenting HTTP API patterns.</p>""},
+{""name"": ""How to parse a file & Kotlin for the curious with Matt Ellis"",""description"":""<p>This event will be broken down into 2 talks, How to parse a file and Kotlin for the curious both being presented by Matt Ellis.</p>""} ]";
+
         public GetAvailableFeedbackEventsTests()
         {
             _stubHttp = HttpMockRepository.At(MeetupSettings.MeetupApiBaseUri);
@@ -26,20 +27,12 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.GetAvailableFeedbackEvents
                 .WithParams(new Dictionary<string, string>()
                 {
                     {"apiKey" , MeetupSettings.MeetupApiKey },
-                    {"status" ,"upcoming" },
-                    {"page" ,"1" },
-                    {"omit" ,"created,status,updated,utc_offset,waitlist_count,venue,group,manual_attendance_count,visibility" },
+                    {"status" ,"past" },
+                    {"page" ,"3" },
+                    {"only" ,"name,description" },
+                    {"desc" ,"true" },
                 })
-                .Return($@"[
-    {{
-        ""id"": ""254791420"",
-        ""name"": ""Chocolatey with Gary Park and HTTP API patterns with Toby Henderson"",
-        ""time"": {new DateTimeOffset(2019, 01, 28, 0, 0, 0, TimeSpan.Zero).ToUnixTimeMilliseconds()},
-        ""yes_rsvp_count"": {10},
-        ""link"": """",
-        ""description"": ""This event will be split into two parts, Gary Ewan Park presenting Adding a layer of Chocolate(y) and the second half will be Toby Henderson presenting HTTP API patterns.""
-    }}
-]").OK();
+                .Return(EVENTS_RESPONSE).OK();
             _stubHttp.Start();
         }
 
@@ -48,7 +41,8 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.GetAvailableFeedbackEvents
         {
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"http://localhost:{AzureFunctionsFixture.Port}/api/feedback/available-events");
+                var url = $"http://localhost:{AzureFunctionsFixture.Port}/api/feedback/available-events";
+                var response = await httpClient.GetAsync(url);
 
                 response.EnsureSuccessStatusCode();
 
@@ -59,10 +53,11 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.GetAvailableFeedbackEvents
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
 
-                var expected = JObject.Parse(@"{ ""id"": ""254791420"", ""title"": ""Chocolatey with Gary Park and HTTP API patterns with Toby Henderson"", ""date"": ""2019-01-28"", ""talks"": [ { ""title"": ""Adding a layer of Chocolate(y)"", ""speaker"": ""Gary Ewan Park"" }, { ""title"": ""HTTP API patterns"", ""speaker"": ""Toby Henderson"" } ] }");
+                //var expected = JObject.Parse(@"{""Title"": ""Chocolatey with Gary Park and HTTP API patterns with Toby Henderson"", ""Talks"": [ { ""Title"": ""Adding a layer of Chocolate(y)"", ""Speaker"": ""Gary Ewan Park"" }, { ""Title"": ""HTTP API patterns"", ""Speaker"": ""Toby Henderson"" } ] }");
+                var expectedArray = JArray.Parse(@"[{""Title"": ""Chocolatey with Gary Park and HTTP API patterns with Toby Henderson"", ""Talks"": [ { ""Title"": ""Adding a layer of Chocolate(y)"", ""Speaker"": ""Gary Ewan Park"" }, { ""Title"": ""HTTP API patterns"", ""Speaker"": ""Toby Henderson"" } ] },
+{""Title"": ""How to parse a file & Kotlin for the curious with Matt Ellis"", ""Talks"":[{""Title"":""How to parse a file"", ""Speaker"":""Matt Ellis""},{""Title"":""Kotlin for the curious"", ""Speaker"":""Matt Ellis""}]}]");
 
-                events.First().ShouldBeEquivalentTo(expected,
-                    c => c.Using(new DateTimeWithinOneMillisecondEquivalencyStep()));
+                events.ShouldBeEquivalentTo(expectedArray);
             }
         }
 
