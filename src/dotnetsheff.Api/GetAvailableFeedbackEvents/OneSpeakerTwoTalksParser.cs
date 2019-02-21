@@ -7,7 +7,7 @@ namespace dotnetsheff.Api.GetAvailableFeedbackEvents
     {
         public IEnumerable<Talk> Parse(PastEvent pastEvent)
         {
-            var oneSpeakerRegex = new Regex("This event will be (split|broken down) into (2|two) (parts|talks), (?<talk1>.+) and (?<talk2>.+) both being presented by (?<speaker>.+).</p>");
+            var oneSpeakerRegex = new Regex("This event will be (split|broken down) into (2|two) (parts|talks), (?<talk1>.+) and (?<talk2>.+) both being presented by (?<speaker>.+).");
 
             var match = oneSpeakerRegex.Match(pastEvent.Description);
 
