@@ -6,10 +6,4 @@ namespace dotnetsheff.Api.GetAvailableFeedbackEvents
     {
         IEnumerable<Talk> Parse(PastEvent pastEvent);
     }
-
-    public class Talk
-    {
-        public string Title { get; set; }
-        public string Speaker { get; set; }
-    }
 }
