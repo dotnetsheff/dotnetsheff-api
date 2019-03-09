@@ -15,5 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\dotnetsheff.Api\dotnetsheff.Api.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="lightningtalksrdescription.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
