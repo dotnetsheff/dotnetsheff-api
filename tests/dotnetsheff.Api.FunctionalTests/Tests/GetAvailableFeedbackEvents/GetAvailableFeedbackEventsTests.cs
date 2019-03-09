@@ -53,7 +53,6 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.GetAvailableFeedbackEvents
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
 
-                //var expected = JObject.Parse(@"{""Title"": ""Chocolatey with Gary Park and HTTP API patterns with Toby Henderson"", ""Talks"": [ { ""Title"": ""Adding a layer of Chocolate(y)"", ""Speaker"": ""Gary Ewan Park"" }, { ""Title"": ""HTTP API patterns"", ""Speaker"": ""Toby Henderson"" } ] }");
                 var expectedArray = JArray.Parse(@"[{""Title"": ""Chocolatey with Gary Park and HTTP API patterns with Toby Henderson"", ""Talks"": [ { ""Title"": ""Adding a layer of Chocolate(y)"", ""Speaker"": ""Gary Ewan Park"" }, { ""Title"": ""HTTP API patterns"", ""Speaker"": ""Toby Henderson"" } ] },
 {""Title"": ""How to parse a file & Kotlin for the curious with Matt Ellis"", ""Talks"":[{""Title"":""How to parse a file"", ""Speaker"":""Matt Ellis""},{""Title"":""Kotlin for the curious"", ""Speaker"":""Matt Ellis""}]}]");
 
