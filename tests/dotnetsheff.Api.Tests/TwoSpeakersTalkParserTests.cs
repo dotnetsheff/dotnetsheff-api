@@ -1,4 +1,6 @@
-﻿using dotnetsheff.Api.GetAvailableFeedbackEvents;
+﻿using System.IO;
+using System.Linq;
+using dotnetsheff.Api.GetAvailableFeedbackEvents;
 using FluentAssertions;
 using Xunit;
 
@@ -12,9 +14,9 @@ namespace dotnetsheff.Api.Tests
             var input = new PastEvent
             {
                 Name = "Chocolatey with Gary Park and HTTP API patterns with Toby Henderson",
-                Description = "This event will be split into two parts, Gary Ewan Park presenting Adding a layer of Chocolate(y) and the second half will be Toby Henderson presenting HTTP API patterns."
+                Description = File.ReadAllText("twotalkstwospeakersdescription.txt")
             };
-            var talks = new TwoSpeakersTalkParser().Parse(input);
+            var talks = new TwoSpeakersTalkParser().Parse(input).ToArray();
 
             talks.ShouldBeEquivalentTo(new[]{
                 new {Title = "Adding a layer of Chocolate(y)", Speaker = "Gary Ewan Park"},
