@@ -19,6 +19,9 @@
     <None Update="lightningtalksrdescription.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="onespeakertwotalksdescription.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="twotalkstwospeakersdescription.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
