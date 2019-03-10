@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace dotnetsheff.Api.GetAvailableFeedbackEvents
 {
-    public class TwoSpeakersTalkParser : ITalkParser
+    public class TwoSpeakersTwoTalksParser : ITalkParser
     {
-        private static string[] _patterns =
+        private static readonly string[] Patterns =
         {
             "This event will be split into two parts, (?<speaker1>.+) presenting (?<talk1>.+) and the second half will be (?<speaker2>.+) presenting (?<talk2>.+?)</p>",
             "This event will be broken down into 2 talks, (?<talk1>.+) and (?<talk2>.+) being presented by (?<speaker1>.+?) and (?<speaker2>.+?)</p>",
@@ -28,7 +28,7 @@ namespace dotnetsheff.Api.GetAvailableFeedbackEvents
 
         private static Match FindMatch(string description)
         {
-            foreach (var pattern in _patterns)
+            foreach (var pattern in Patterns)
             {
                 if (Regex.IsMatch(description, pattern))
                     return Regex.Match(description, pattern);

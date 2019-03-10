@@ -13,7 +13,7 @@ namespace dotnetsheff.Api.Tests
         [Theory]
         [MemberData(nameof(TwoSpeakersCases))]
         public void ShouldReturnCorrectTalksForTwoSpeakers(PastEvent pastEvent, IEnumerable<Talk> expectedTalks) => 
-            new TwoSpeakersTalkParser().Parse(pastEvent).ShouldBeEquivalentTo(expectedTalks);
+            new TwoSpeakersTwoTalksParser().Parse(pastEvent).ShouldBeEquivalentTo(expectedTalks);
 
         public static IEnumerable<object[]> TwoSpeakersCases =>
             new List<object[]>
