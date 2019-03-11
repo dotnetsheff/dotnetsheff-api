@@ -1,25 +1,57 @@
-﻿using dotnetsheff.Api.GetAvailableFeedbackEvents;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using dotnetsheff.Api.GetAvailableFeedbackEvents;
 using FluentAssertions;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace dotnetsheff.Api.Tests
 {
     public class TwoSpeakersTalkParserTests
     {
-        [Fact]
-        public void ShouldReturnCorrectTalksForTwoSpeakers()
-        {
-            var input = new PastEvent
-            {
-                Name = "Chocolatey with Gary Park and HTTP API patterns with Toby Henderson",
-                Description = "This event will be split into two parts, Gary Ewan Park presenting Adding a layer of Chocolate(y) and the second half will be Toby Henderson presenting HTTP API patterns."
-            };
-            var talks = new TwoSpeakersTalkParser().Parse(input);
+        [Theory]
+        [MemberData(nameof(TwoSpeakersCases))]
+        public void ShouldReturnCorrectTalksForTwoSpeakers(PastEvent pastEvent, IEnumerable<Talk> expectedTalks) => 
+            new TwoSpeakersTwoTalksParser().Parse(pastEvent).ShouldBeEquivalentTo(expectedTalks);
 
-            talks.ShouldBeEquivalentTo(new[]{
-                new {Title = "Adding a layer of Chocolate(y)", Speaker = "Gary Ewan Park"},
-                new {Title = "HTTP API patterns", Speaker = "Toby Henderson"},
-            });
-        }
+        public static IEnumerable<object[]> TwoSpeakersCases =>
+            new List<object[]>
+            {
+                new object[]
+                {
+                    JsonConvert.DeserializeObject<PastEvent[]>(File.ReadAllText("twotalkstwospeakersdescription.txt")).First(),
+                    new[]
+                    {
+                        new Talk
+                        {
+                            Title = "Reasonable Software",
+                            Speaker = "Ian Johnson"
+                        },
+                        new Talk
+                        {
+                            Title = "A more flexible way to store your data with MongoDB",
+                            Speaker = "Kevin Smith"
+                        }
+                    }
+                },
+                new object[]
+                {
+                    JsonConvert.DeserializeObject<PastEvent[]>(File.ReadAllText("twotalkstwospeakersdescription.txt")).Last(),
+                    new[]
+                    {
+                        new Talk
+                        {
+                            Title = "Adding a layer of Chocolate(y)",
+                            Speaker = "Gary Ewan Park"
+                        },
+                        new Talk
+                        {
+                            Title = "HTTP API patterns",
+                            Speaker = "Toby Henderson"
+                        }
+                    }
+                },
+            };
     }
 }

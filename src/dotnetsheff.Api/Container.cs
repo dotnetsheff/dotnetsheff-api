@@ -10,6 +10,7 @@ namespace dotnetsheff.Api
     public class Container
     {
         private const string GROUP_NAME = "dotnetsheff";
+
         private readonly IContainer _container;
 
         public static Container Instance { get; } = new Container();
@@ -22,21 +23,13 @@ namespace dotnetsheff.Api
 
             BuildGetLatestEventTypes(builder);
 
-            BuildGetAvailableFeedbackEvents(builder);
+            builder.RegisterModule<FeedbackModule>();
 
             builder.RegisterType<AlexaSkillEventQuery>().As<IAlexaSkillEventQuery>();
 
             builder.RegisterType<EventSpeechlet>().AsSelf();
 
             _container = builder.Build();
-        }
-
-        private static void BuildGetAvailableFeedbackEvents(ContainerBuilder builder)
-        {
-            builder.RegisterType<TwoSpeakersTalkParser>().As<ITalkParser>();
-            builder.RegisterType<OneSpeakerTwoTalksParser>().As<ITalkParser>();
-
-            builder.Register(ctx => new LastEventsQuery(ctx.Resolve<IMeetupApi>(), GROUP_NAME, ctx.Resolve<IMeetupSettings>().ApiKey)).As<ILastEventsQuery>();
         }
 
         private static void BuildMeetupApi(ContainerBuilder builder)
