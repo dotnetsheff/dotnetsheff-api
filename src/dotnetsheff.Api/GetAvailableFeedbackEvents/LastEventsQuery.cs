@@ -17,6 +17,6 @@ namespace dotnetsheff.Api.GetAvailableFeedbackEvents
             _apiKey = apiKey;
         }
         public async Task<IEnumerable<PastEvent>> Execute(int eventCount) => 
-            await _meetupApi.GetPastEventsAsync(_group, _apiKey, "past", eventCount.ToString(), "name,description", "true");
+            await _meetupApi.GetPastEventsAsync(_group, _apiKey, "past", eventCount.ToString(), "id,name,description", "true");
     }
 }
