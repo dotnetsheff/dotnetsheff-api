@@ -37,6 +37,7 @@ namespace dotnetsheff.Api.GetAvailableFeedbackEvents
                     {
                         eventTalks.Add(new EventTalks
                         {
+                            Id = lastEvent.Id,
                             Title = lastEvent.Name,
                             Talks = talks
                         });
@@ -53,6 +54,7 @@ namespace dotnetsheff.Api.GetAvailableFeedbackEvents
 
         private class EventTalks
         {
+            public string Id { get; set; }
             public string Title { get; set; }
             public Talk[] Talks { get; set; }
         }
