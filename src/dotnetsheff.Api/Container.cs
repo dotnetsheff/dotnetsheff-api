@@ -1,8 +1,9 @@
 using Autofac;
+using AutoMapper;
 using dotnetsheff.Api.AlexaSkill;
-using dotnetsheff.Api.GetAvailableFeedbackEvents;
 using dotnetsheff.Api.GetLatestEvent;
 using dotnetsheff.Api.Meetup;
+using dotnetsheff.Api.PostFeedbackEvent;
 using Microsoft.Azure.WebJobs.Host;
 
 namespace dotnetsheff.Api
@@ -28,6 +29,8 @@ namespace dotnetsheff.Api
             builder.RegisterType<AlexaSkillEventQuery>().As<IAlexaSkillEventQuery>();
 
             builder.RegisterType<EventSpeechlet>().AsSelf();
+
+
 
             _container = builder.Build();
         }

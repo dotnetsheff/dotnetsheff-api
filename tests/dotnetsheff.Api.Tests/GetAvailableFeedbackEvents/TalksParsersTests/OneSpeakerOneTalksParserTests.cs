@@ -6,7 +6,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace dotnetsheff.Api.Tests
+namespace dotnetsheff.Api.Tests.GetAvailableFeedbackEvents.TalksParsersTests
 {
     public class OneSpeakerOneTalksParserTests
     {

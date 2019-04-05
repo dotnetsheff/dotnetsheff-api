@@ -5,9 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HttpMock;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using Ploeh.AutoFixture;
 using Xunit;
 
