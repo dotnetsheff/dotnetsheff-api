@@ -1,8 +1,8 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
 
-namespace dotnetsheff.Api.PostFeedbackEvent
+namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent.Models
 {
-    public class EventTableEntity : TableEntity
+    internal class EventTableEntity : TableEntity
     {
         public string Id { get; set; }
         public string Title { get; set; }
@@ -12,6 +12,6 @@ namespace dotnetsheff.Api.PostFeedbackEvent
         public string Venue { get; set; }
         public string Enjoyed { get; set; }
         public string Improvements { get; set; }
-        //public TalkTableEntity[] Talks { get; set; }
+        public TalkTableEntity[] Talks { get; set; }
     }
 }

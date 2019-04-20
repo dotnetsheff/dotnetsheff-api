@@ -1,8 +1,6 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
-
-namespace dotnetsheff.Api.PostFeedbackEvent
+﻿namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent.Models
 {
-    public class TalkTableEntity : TableEntity
+    internal class TalkFeedback
     {
         public string Id { get; set; }
         public string Title { get; set; }

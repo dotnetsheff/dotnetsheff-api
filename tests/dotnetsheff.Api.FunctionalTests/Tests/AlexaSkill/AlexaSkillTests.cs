@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using AutoFixture;
 using FluentAssertions;
 using HttpMock;
 using Newtonsoft.Json.Linq;
-using Ploeh.AutoFixture;
 using Xunit;
 
 namespace dotnetsheff.Api.FunctionalTests.Tests.AlexaSkill

@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AutoFixture;
+using dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent.Models;
 using FluentAssertions;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -13,8 +15,11 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
     [Collection(XUnitCollectionNames.ApiCollection)]
     public class PostFeedbackEventTests : IDisposable
     {
+        private const string EVENT_TABLE_REFERENCE = "eventfeedback";
+        private const string TALK_TABLE_REFERENCE = "talkfeedback";
         private readonly HttpClient _client;
         private readonly CloudTable _eventFeedbackTable;
+        private readonly CloudTable _talkFeedbackTable;
 
         public PostFeedbackEventTests()
         {
@@ -22,7 +27,8 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
             {
                 BaseAddress = new Uri(MeetupSettings.MeetupApiBaseUri)
             };
-            _eventFeedbackTable = CloudStorageAccount.DevelopmentStorageAccount.CreateCloudTableClient().GetTableReference("eventfeedback");
+            _eventFeedbackTable = CloudStorageAccount.DevelopmentStorageAccount.CreateCloudTableClient().GetTableReference(EVENT_TABLE_REFERENCE);
+            _talkFeedbackTable = CloudStorageAccount.DevelopmentStorageAccount.CreateCloudTableClient().GetTableReference(TALK_TABLE_REFERENCE);
         }
 
         [Fact]
@@ -30,33 +36,23 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
         {
             var url = $"http://localhost:{AzureFunctionsFixture.Port}/api/feedback";
 
-            var expected = new EventFeedback
-            {
-                Id = "1",
-                Title = ".net is dead",
-                //Talks= new[]
-                //{
-                //    new TalkFeedback
-                //    {
-                //        Id = "1-1",
-                //        Title = "Kev is shit",
-                //    }, 
-                //    new TalkFeedback
-                //    {
-                //        Id = "1-2",
-                //        Title = "Kev is more shit"
-                //    }
-                //}
-            };
+            var expected = new Fixture().Build<EventFeedback>().Create(); 
 
             var response = await _client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(expected)));
 
             response.EnsureSuccessStatusCode();
 
-            var actual = _eventFeedbackTable.CreateQuery<EventTableEntity>().Execute().SingleOrDefault(x => x.Id == expected.Id);
+            var eventEntity = _eventFeedbackTable
+                .CreateQuery<EventTableEntity>()
+                .Execute()
+                .SingleOrDefault(x => x.Id == expected.Id);
+            var talks = _talkFeedbackTable
+                .CreateQuery<TalkTableEntity>()
+                .Execute()
+                .Where(x => x.PartitionKey == eventEntity?.Id);
 
-            actual.Should().NotBeNull();
-            actual.Title.Should().Be(expected.Title);
+            eventEntity.ShouldBeEquivalentTo(expected, o => o.ExcludingMissingMembers().Excluding(x => x.Talks));
+            talks.ShouldBeEquivalentTo(expected.Talks, o => o.ExcludingMissingMembers());
         }
         
         public void Dispose()
@@ -64,51 +60,5 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
             _eventFeedbackTable.Delete();
             _client.Dispose();
         }
-    }
-
-    public class TalkFeedback
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public string Speaker { get; set; }
-        public string Rating { get; set; }
-        public string Enjoyed { get; set; }
-        public string Improvements { get; set; }
-    }
-
-    public class EventFeedback
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public string Overall { get; set; }
-        public string Food { get; set; }
-        public string Drinks { get; set; }
-        public string Venue { get; set; }
-        public string Enjoyed { get; set; }
-        public string Improvements { get; set; }
-        public TalkFeedback[] Talks { get; set; }
-    }
-
-    public class EventTableEntity : TableEntity
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public string Overall { get; set; }
-        public string Food { get; set; }
-        public string Drinks { get; set; }
-        public string Venue { get; set; }
-        public string Enjoyed { get; set; }
-        public string Improvements { get; set; }
-        public TalkTableEntity[] Talks { get; set; }
-    }
-
-    public class TalkTableEntity : TableEntity
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public string Speaker { get; set; }
-        public string Rating { get; set; }
-        public string Enjoyed { get; set; }
-        public string Improvements { get; set; }
     }
 }

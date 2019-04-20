@@ -8,22 +8,23 @@ namespace dotnetsheff.Api.Tests.PostFeedbackEvent
 {
     public class EventFeedbackProfileTests
     {
-        private const string PARTITION_KEY = "Feedback";
-        public EventFeedbackProfileTests() => Mapper.Initialize(cfg => cfg.AddProfile<EventFeedbackProfile>());
+        private readonly IMapper _mapper;
+        private const string ROW_KEY = "Event";
+        public EventFeedbackProfileTests() => _mapper = new MapperConfiguration(cfg => cfg.AddProfile<EventFeedbackProfile>()).CreateMapper();
 
         [Fact]
-        public void ShouldBeConfiguredCorrectly() => Mapper.AssertConfigurationIsValid();
+        public void ShouldBeConfiguredCorrectly() => _mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
         [Fact]
         public void ShouldMapEventCorrectly()
         {
             var expected = new Fixture().Build<EventFeedback>().Create();
 
-            var actual = Mapper.Map<EventTableEntity>(expected);
+            var actual = _mapper.Map<EventFeedbackTableEntity>(expected);
 
             actual.ShouldBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
-            actual.PartitionKey.Should().Be(PARTITION_KEY);
-            actual.RowKey.Should().Be(expected.Id);
+            actual.PartitionKey.Should().Be(expected.Id);
+            actual.RowKey.Should().Be(ROW_KEY);
         }
     }
 }

@@ -24,15 +24,28 @@ namespace dotnetsheff.Api
 
             BuildGetLatestEventTypes(builder);
 
+            BuildAutomapper(builder);
+
             builder.RegisterModule<FeedbackModule>();
 
             builder.RegisterType<AlexaSkillEventQuery>().As<IAlexaSkillEventQuery>();
 
             builder.RegisterType<EventSpeechlet>().AsSelf();
 
-
-
             _container = builder.Build();
+        }
+
+        private void BuildAutomapper(ContainerBuilder builder)
+        {
+            builder.Register(ctx =>
+            {
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile<EventFeedbackProfile>();
+                });
+
+                return new Mapper(config, ctx.Resolve<ILifetimeScope>().Resolve);
+            }).As<IMapper>().InstancePerLifetimeScope();
         }
 
         private static void BuildMeetupApi(ContainerBuilder builder)
