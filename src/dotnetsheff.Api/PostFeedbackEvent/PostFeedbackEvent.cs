@@ -32,7 +32,7 @@ namespace dotnetsheff.Api.PostFeedbackEvent
 
             await SaveToAzureStorage(eventTableEntity);
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
 
         private static async Task SaveToAzureStorage(
