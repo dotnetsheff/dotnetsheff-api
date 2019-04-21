@@ -45,7 +45,7 @@ namespace dotnetsheff.Api
                 });
 
                 return new Mapper(config, ctx.Resolve<ILifetimeScope>().Resolve);
-            }).As<IMapper>().InstancePerLifetimeScope();
+            }).As<IMapper>().SingleInstance();
         }
 
         private static void BuildMeetupApi(ContainerBuilder builder)
