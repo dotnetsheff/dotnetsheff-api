@@ -78,7 +78,7 @@ namespace dotnetsheff.Api.PostFeedbackEvent
             var eventFeedback = await GetEventFeedback(request);
 
             var @event = _mapper.Map<EventFeedbackTableEntity>(eventFeedback);
-            var talks = _mapper.Map<TalkFeedbackTableEntity[]>(eventFeedback.Talks);
+            var talks = _mapper.Map<TalkFeedbackTableEntity[]>(eventFeedback.Talks, opts => opts.Items.Add("EventId", eventFeedback.Id));
 
             return (@event, talks);
         }
