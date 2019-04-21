@@ -6,7 +6,7 @@ configuration: Release
 
 install:
   - "\"%ProgramFiles(x86)%\\Microsoft SDKs\\Azure\\Storage Emulator\\AzureStorageEmulator.exe\" start"
-  - npm i -g azure-functions-core-tools
+  - npm i -g azure-functions-core-tools@1
   - dotnet restore
 
 build:
