@@ -23,7 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.1" />
-    <PackageReference Include="automapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="BouncyCastle" Version="1.8.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.5.2" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.2" />
