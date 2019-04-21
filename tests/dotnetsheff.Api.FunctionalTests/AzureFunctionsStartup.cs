@@ -21,7 +21,7 @@ namespace dotnetsheff.Api.FunctionalTests
             _meetupApiKey = meetupApiKey;
             _alexaSkillId = alexaSkillId;
         }
-
+            
         public void Start()
         {   
             var currentDir = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
@@ -33,8 +33,8 @@ namespace dotnetsheff.Api.FunctionalTests
 #if (!DEBUG)
             mode = "Release";
 #endif
-            var funcCliExe = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.ApplicationData), @"npm\func.cmd");
+            var funcCliExe = Path.Combine(
+                "C:\\Program Files\\nodejs\\", @"func.cmd");
             
             var processStartInfo = new ProcessStartInfo
             {

@@ -11,6 +11,5 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent.Models
         public string Venue { get; set; }
         public string Enjoyed { get; set; }
         public string Improvements { get; set; }
-        public TalkTableEntity[] Talks { get; set; }
     }
 }

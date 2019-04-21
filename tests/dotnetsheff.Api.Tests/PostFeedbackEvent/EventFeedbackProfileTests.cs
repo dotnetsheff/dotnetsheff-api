@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoFixture;
 using AutoMapper;
 using dotnetsheff.Api.PostFeedbackEvent;
@@ -10,7 +11,7 @@ namespace dotnetsheff.Api.Tests.PostFeedbackEvent
     public class EventFeedbackProfileTests
     {
         private readonly IMapper _mapper;
-        private const string ROW_KEY = "Event";
+
         public EventFeedbackProfileTests()
         {
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile<EventFeedbackProfile>());
@@ -30,7 +31,7 @@ namespace dotnetsheff.Api.Tests.PostFeedbackEvent
 
             actual.ShouldBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
             actual.PartitionKey.Should().Be(expected.Id);
-            actual.RowKey.Should().Be(ROW_KEY);
+            actual.RowKey.Should().NotBe(Guid.Empty.ToString());
         }
 
 
@@ -42,8 +43,10 @@ namespace dotnetsheff.Api.Tests.PostFeedbackEvent
             var actual = _mapper.Map<TalkFeedbackTableEntity[]>(expected.Talks, ops => ops.Items.Add("EventId", expected.Id));
 
             actual.ShouldBeEquivalentTo(expected.Talks, options => options.ExcludingMissingMembers());
-            actual.Select(x => x.PartitionKey).Distinct().ShouldBeEquivalentTo(new []{expected.Id});
-            actual.Select(x => x.RowKey).ShouldBeEquivalentTo(expected.Talks.Select(x => x.Id));
+            actual.Select(x => x.PartitionKey)
+                .ShouldBeEquivalentTo(expected.Talks.Select(x => $"{expected.Id}-{x.Id}").ToArray());
+
+            actual.Select(x => x.RowKey).Should().NotContain(Guid.Empty.ToString());
         }
     }
 }

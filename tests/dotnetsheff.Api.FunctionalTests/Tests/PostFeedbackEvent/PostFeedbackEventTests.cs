@@ -18,8 +18,7 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
         private const string EVENT_TABLE_REFERENCE = "eventfeedback";
         private const string TALK_TABLE_REFERENCE = "talkfeedback";
         private readonly HttpClient _client;
-        private readonly CloudTable _eventFeedbackTable;
-        private readonly CloudTable _talkFeedbackTable;
+        private readonly CloudTableClient _cloudTableClient;
 
         public PostFeedbackEventTests()
         {
@@ -27,8 +26,8 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
             {
                 BaseAddress = new Uri(MeetupSettings.MeetupApiBaseUri)
             };
-            _eventFeedbackTable = CloudStorageAccount.DevelopmentStorageAccount.CreateCloudTableClient().GetTableReference(EVENT_TABLE_REFERENCE);
-            _talkFeedbackTable = CloudStorageAccount.DevelopmentStorageAccount.CreateCloudTableClient().GetTableReference(TALK_TABLE_REFERENCE);
+
+            _cloudTableClient = CloudStorageAccount.DevelopmentStorageAccount.CreateCloudTableClient();
         }
 
         [Fact]
@@ -38,27 +37,55 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
 
             var expected = new Fixture().Build<EventFeedback>().Create(); 
 
-            var response = await _client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(expected)));
+            var response = await _client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(expected)))
+                .ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
 
-            var eventEntity = _eventFeedbackTable
-                .CreateQuery<EventTableEntity>()
-                .Execute()
-                .Single(x => x.PartitionKey == expected.Id);
+            var eventEntity = GetActualStoredEvent(expected);
 
-            var talks = _talkFeedbackTable
-                .CreateQuery<TalkTableEntity>()
-                .Execute()
-                .Where(x => x.PartitionKey == eventEntity.PartitionKey);
+            var talks = GetActualStoredTalks(expected);
 
-            eventEntity.ShouldBeEquivalentTo(expected, o => o.ExcludingMissingMembers().Excluding(x => x.Talks));
+            eventEntity.ShouldBeEquivalentTo(expected, o => o.ExcludingMissingMembers());
             talks.ShouldBeEquivalentTo(expected.Talks, o => o.ExcludingMissingMembers());
         }
-        
+
+        private TalkTableEntity[] GetActualStoredTalks(EventFeedback expected)
+        {
+            var talkPartitionKeys = expected.Talks.Select(
+                x => $"{expected.Id}-{x.Id}").ToArray();
+
+            var talkFeedbackTable = _cloudTableClient.GetTableReference(TALK_TABLE_REFERENCE);
+            var talks = talkFeedbackTable
+                .CreateQuery<TalkTableEntity>()
+                .Where(x => x.PartitionKey == talkPartitionKeys[0] || x.PartitionKey == talkPartitionKeys[1] ||
+                            x.PartitionKey == talkPartitionKeys[2])
+                .ToArray();
+
+            return talks;
+        }
+
+        private EventTableEntity GetActualStoredEvent(EventFeedback expected)
+        {
+            var eventFeedbackTable = _cloudTableClient.GetTableReference(EVENT_TABLE_REFERENCE);
+
+            var eventEntity = eventFeedbackTable
+                .CreateQuery<EventTableEntity>()
+                .Where(x => x.PartitionKey == expected.Id)
+                .ToArray()
+                .Single();
+
+            return eventEntity;
+        }
+
         public void Dispose()
         {
-            _eventFeedbackTable.DeleteIfExists();
+            var eventFeedbackTable = _cloudTableClient.GetTableReference(EVENT_TABLE_REFERENCE);
+            var talkFeedbackTable = _cloudTableClient.GetTableReference(TALK_TABLE_REFERENCE);
+
+            eventFeedbackTable.DeleteIfExists();
+            talkFeedbackTable.DeleteIfExists();
+
             _client.Dispose();
         }
     }

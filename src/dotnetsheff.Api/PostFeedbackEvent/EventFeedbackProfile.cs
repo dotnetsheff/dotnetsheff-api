@@ -9,13 +9,13 @@ namespace dotnetsheff.Api.PostFeedbackEvent
         {
             CreateMap<EventFeedback, EventFeedbackTableEntity>()
                 .ForMember(x => x.PartitionKey, o => o.MapFrom(x => x.Id))
-                .ForMember(x => x.RowKey, o => o.MapFrom(x => "Event"))
+                .ForMember(x => x.RowKey, o => o.MapFrom(x => Guid.NewGuid()))
                 .ForMember(x => x.ETag, o => o.Ignore())
                 .ForMember(x => x.Timestamp, o => o.Ignore());
             
             CreateMap<TalkFeedback, TalkFeedbackTableEntity>()
-                .ForMember(x => x.PartitionKey, o => o.MapFrom((_, __, ___, c) => c.Items["EventId"]))
-                .ForMember(x => x.RowKey, o => o.MapFrom(x => x.Id))
+                .ForMember(x => x.PartitionKey, o => o.MapFrom((x, _, __, c) => $"{c.Items["EventId"]}-{x.Id}"))
+                .ForMember(x => x.RowKey, o => o.MapFrom(x => Guid.NewGuid()))
                 .ForMember(x => x.ETag, o => o.Ignore())
                 .ForMember(x => x.Timestamp, o => o.Ignore());
         }
