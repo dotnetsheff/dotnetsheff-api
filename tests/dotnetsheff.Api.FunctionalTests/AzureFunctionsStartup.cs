@@ -33,9 +33,9 @@ namespace dotnetsheff.Api.FunctionalTests
 #if (!DEBUG)
             mode = "Release";
 #endif
-            var funcCliExe = Path.Combine(
-                "C:\\Program Files\\nodejs\\", @"func.cmd");
-            
+            var funcCliExe = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData), @"npm\func.cmd");
+
             var processStartInfo = new ProcessStartInfo
             {
                 FileName = funcCliExe,
