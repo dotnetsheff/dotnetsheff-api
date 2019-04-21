@@ -12,6 +12,5 @@ namespace dotnetsheff.Api.PostFeedbackEvent
         public string Venue { get; set; }
         public string Enjoyed { get; set; }
         public string Improvements { get; set; }
-        public TalkFeedbackTableEntity[] Talks { get; set; }
     }
 }

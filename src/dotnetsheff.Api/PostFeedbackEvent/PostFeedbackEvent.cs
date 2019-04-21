@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,23 @@ namespace dotnetsheff.Api.PostFeedbackEvent
 {
     public class PostFeedbackEvent
     {
-        private static TraceWriter _log;
-        private static IAsyncCollector<EventFeedbackTableEntity> _eventCollector;
-        private static IAsyncCollector<TalkFeedbackTableEntity> _talkCollector;
+        private readonly TraceWriter _log;
+        private readonly IAsyncCollector<EventFeedbackTableEntity> _eventCollector;
+        private readonly IAsyncCollector<TalkFeedbackTableEntity> _talkCollector;
+        private readonly IMapper _mapper;
+
+        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
+
+        public PostFeedbackEvent(TraceWriter log, IAsyncCollector<EventFeedbackTableEntity> eventCollector, IAsyncCollector<TalkFeedbackTableEntity> talkCollector)
+        {
+            _log = log;
+            _eventCollector = eventCollector;
+            _talkCollector = talkCollector;
+            _mapper = Container.Instance.Resolve<IMapper>(_log);
+        }
 
         [FunctionName("PostFeedbackEvent")]
         public static async Task<HttpResponseMessage> Run(
@@ -24,48 +39,68 @@ namespace dotnetsheff.Api.PostFeedbackEvent
             [Table("talkfeedback", Connection = "AzureWebJobsStorage")] IAsyncCollector<TalkFeedbackTableEntity> talkCollector,
             TraceWriter log)
         {
-            _log = log;
-            _eventCollector = eventCollector;
-            _talkCollector = talkCollector;
+            var postFeedbackEvent = new PostFeedbackEvent(log, eventCollector, talkCollector);
 
-            var eventTableEntity = await GetTableEntity(request);
-
-            await SaveToAzureStorage(eventTableEntity);
+            await postFeedbackEvent.RunAsync(request)
+                .ConfigureAwait(false);
 
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
 
-        private static async Task SaveToAzureStorage(
-            EventFeedbackTableEntity eventTableEntity)
+        private async Task RunAsync(HttpRequestMessage request)
         {
-            _log.Info($"eventId: {eventTableEntity.Id} partitionKey: {eventTableEntity.PartitionKey} rowKey:{eventTableEntity.RowKey}");
+            var eventTableEntity = await GetTableEntity(request)
+                .ConfigureAwait(false);
 
-            await _eventCollector.AddAsync(eventTableEntity);
+            await SaveToAzureStorage(eventTableEntity.@event, eventTableEntity.talks)
+                .ConfigureAwait(false);
+        }
 
-            _log.Info($"Event with rowkey: {eventTableEntity.Id} and partitionKey: {eventTableEntity.PartitionKey} was added.");
+        private async Task SaveToAzureStorage(
+            EventFeedbackTableEntity @event, IReadOnlyCollection<TalkFeedbackTableEntity> talks)
+        {
+            _log.Info($"eventId: {@event.Id} partitionKey: {@event.PartitionKey} rowKey:{@event.RowKey}");
 
-            foreach (var talk in eventTableEntity.Talks)
+            await _eventCollector.AddAsync(@event)
+                .ConfigureAwait(false);
+
+            _log.Info($"Event with rowkey: {@event.Id} and partitionKey: {@event.PartitionKey} was added.");
+
+            foreach (var talk in talks)
             {
-                talk.PartitionKey = eventTableEntity.Id;
-                await _talkCollector.AddAsync(talk);
+                talk.PartitionKey = @event.Id;
+
+                await _talkCollector.AddAsync(talk)
+                    .ConfigureAwait(false);
+
                 _log.Info($"Talk with rowkey: {talk.Id} and partitionKey: {talk.PartitionKey} was added.");
             }
         }
 
-        private static async Task<EventFeedbackTableEntity> GetTableEntity(HttpRequestMessage request)
+        private async Task<(EventFeedbackTableEntity @event, IReadOnlyCollection<TalkFeedbackTableEntity> talks)> GetTableEntity(HttpRequestMessage request)
+        {
+            var eventFeedback = await GetEventFeedback(request);
+
+            var @event = _mapper.Map<EventFeedbackTableEntity>(eventFeedback);
+            var talks = _mapper.Map<TalkFeedbackTableEntity[]>(eventFeedback.Talks);
+
+            return (@event, talks);
+        }
+
+        private async Task<EventFeedback> GetEventFeedback(HttpRequestMessage request)
         {
             _log.Info("Request for event feedback received.");
 
+            var body = await request.Content.ReadAsStringAsync()
+                .ConfigureAwait(false);
+
             var eventFeedback = JsonConvert.DeserializeObject<EventFeedback>(
-                await request.Content.ReadAsStringAsync(),
-                new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
+                body,
+                JsonSerializerSettings);
 
             _log.Info($"Event feedback for: '{eventFeedback.Title}' extracted.");
 
-            return Container.Instance.Resolve<IMapper>(_log).Map<EventFeedbackTableEntity>(eventFeedback);
+            return eventFeedback;
         }
     }
 }
