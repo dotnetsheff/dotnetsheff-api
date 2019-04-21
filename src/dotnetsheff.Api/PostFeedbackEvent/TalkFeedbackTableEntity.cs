@@ -4,7 +4,6 @@ namespace dotnetsheff.Api.PostFeedbackEvent
 {
     public class TalkFeedbackTableEntity : TableEntity
     {
-        public string Id { get; set; }
         public string Title { get; set; }
         public string Speaker { get; set; }
         public string Rating { get; set; }

@@ -59,21 +59,17 @@ namespace dotnetsheff.Api.PostFeedbackEvent
         private async Task SaveToAzureStorage(
             EventFeedbackTableEntity @event, IReadOnlyCollection<TalkFeedbackTableEntity> talks)
         {
-            _log.Info($"eventId: {@event.Id} partitionKey: {@event.PartitionKey} rowKey:{@event.RowKey}");
-
             await _eventCollector.AddAsync(@event)
                 .ConfigureAwait(false);
 
-            _log.Info($"Event with rowkey: {@event.Id} and partitionKey: {@event.PartitionKey} was added.");
+            _log.Info($"Event with partition key: {@event.PartitionKey} and row key: {@event.RowKey} was added.");
 
             foreach (var talk in talks)
             {
-                talk.PartitionKey = @event.Id;
-
                 await _talkCollector.AddAsync(talk)
                     .ConfigureAwait(false);
 
-                _log.Info($"Talk with rowkey: {talk.Id} and partitionKey: {talk.PartitionKey} was added.");
+                _log.Info($"Talk with partition key: {talk.PartitionKey} and row key: {talk.RowKey} was added.");
             }
         }
 

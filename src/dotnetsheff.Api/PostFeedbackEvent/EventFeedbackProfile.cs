@@ -14,7 +14,7 @@ namespace dotnetsheff.Api.PostFeedbackEvent
                 .ForMember(x => x.Timestamp, o => o.Ignore());
             
             CreateMap<TalkFeedback, TalkFeedbackTableEntity>()
-                .ForMember(x => x.PartitionKey, o => o.Ignore())
+                .ForMember(x => x.PartitionKey, o => o.MapFrom((_, __, ___, c) => c.Items["EventId"]))
                 .ForMember(x => x.RowKey, o => o.MapFrom(x => x.Id))
                 .ForMember(x => x.ETag, o => o.Ignore())
                 .ForMember(x => x.Timestamp, o => o.Ignore());
