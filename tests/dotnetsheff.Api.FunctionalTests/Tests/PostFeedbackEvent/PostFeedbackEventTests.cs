@@ -46,6 +46,7 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
                 .CreateQuery<EventTableEntity>()
                 .Execute()
                 .Single(x => x.PartitionKey == expected.Id);
+
             var talks = _talkFeedbackTable
                 .CreateQuery<TalkTableEntity>()
                 .Execute()
@@ -57,7 +58,7 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
         
         public void Dispose()
         {
-            _eventFeedbackTable.Delete();
+            _eventFeedbackTable.DeleteIfExists();
             _client.Dispose();
         }
     }
