@@ -4,7 +4,6 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent.Models
 {
     internal class EventTableEntity : TableEntity
     {
-        public string Id { get; set; }
         public string Title { get; set; }
         public string Overall { get; set; }
         public string Food { get; set; }

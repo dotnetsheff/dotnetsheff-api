@@ -45,11 +45,11 @@ namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent
             var eventEntity = _eventFeedbackTable
                 .CreateQuery<EventTableEntity>()
                 .Execute()
-                .SingleOrDefault(x => x.Id == expected.Id);
+                .Single(x => x.PartitionKey == expected.Id);
             var talks = _talkFeedbackTable
                 .CreateQuery<TalkTableEntity>()
                 .Execute()
-                .Where(x => x.PartitionKey == eventEntity?.Id);
+                .Where(x => x.PartitionKey == eventEntity.PartitionKey);
 
             eventEntity.ShouldBeEquivalentTo(expected, o => o.ExcludingMissingMembers().Excluding(x => x.Talks));
             talks.ShouldBeEquivalentTo(expected.Talks, o => o.ExcludingMissingMembers());
