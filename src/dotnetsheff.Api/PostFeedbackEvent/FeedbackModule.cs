@@ -2,7 +2,7 @@
 using dotnetsheff.Api.GetAvailableFeedbackEvents;
 using dotnetsheff.Api.Meetup;
 
-namespace dotnetsheff.Api
+namespace dotnetsheff.Api.PostFeedbackEvent
 {
     public class FeedbackModule : Module
     {

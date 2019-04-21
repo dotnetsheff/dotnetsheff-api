@@ -21,7 +21,7 @@ namespace dotnetsheff.Api.FunctionalTests
             _meetupApiKey = meetupApiKey;
             _alexaSkillId = alexaSkillId;
         }
-
+            
         public void Start()
         {   
             var currentDir = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
@@ -35,7 +35,7 @@ namespace dotnetsheff.Api.FunctionalTests
 #endif
             var funcCliExe = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), @"npm\func.cmd");
-            
+
             var processStartInfo = new ProcessStartInfo
             {
                 FileName = funcCliExe,

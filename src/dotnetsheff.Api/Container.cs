@@ -1,8 +1,9 @@
 using Autofac;
+using AutoMapper;
 using dotnetsheff.Api.AlexaSkill;
-using dotnetsheff.Api.GetAvailableFeedbackEvents;
 using dotnetsheff.Api.GetLatestEvent;
 using dotnetsheff.Api.Meetup;
+using dotnetsheff.Api.PostFeedbackEvent;
 using Microsoft.Azure.WebJobs.Host;
 
 namespace dotnetsheff.Api
@@ -23,6 +24,8 @@ namespace dotnetsheff.Api
 
             BuildGetLatestEventTypes(builder);
 
+            BuildAutomapper(builder);
+
             builder.RegisterModule<FeedbackModule>();
 
             builder.RegisterType<AlexaSkillEventQuery>().As<IAlexaSkillEventQuery>();
@@ -30,6 +33,19 @@ namespace dotnetsheff.Api
             builder.RegisterType<EventSpeechlet>().AsSelf();
 
             _container = builder.Build();
+        }
+
+        private void BuildAutomapper(ContainerBuilder builder)
+        {
+            builder.Register(ctx =>
+            {
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile<EventFeedbackProfile>();
+                });
+
+                return new Mapper(config, ctx.Resolve<ILifetimeScope>().Resolve);
+            }).As<IMapper>().InstancePerLifetimeScope();
         }
 
         private static void BuildMeetupApi(ContainerBuilder builder)
