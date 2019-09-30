@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using AlexaSkillsKit.Authentication;
 using AlexaSkillsKit.Json;
 using AlexaSkillsKit.Speechlet;
 using AlexaSkillsKit.UI;
 using Microsoft.Azure.WebJobs.Host;
-using Refit;
 
 namespace dotnetsheff.Api.AlexaSkill
 {

@@ -1,5 +1,3 @@
-using dotnetsheff.Api.Meetup;
-
 namespace dotnetsheff.Api.GetLatestEvent
 {
     public class EventToNextEventConvertor : IEventToNextEventConvertor

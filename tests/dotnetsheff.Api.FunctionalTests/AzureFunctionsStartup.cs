@@ -21,9 +21,9 @@ namespace dotnetsheff.Api.FunctionalTests
             _meetupApiKey = meetupApiKey;
             _alexaSkillId = alexaSkillId;
         }
-            
+
         public void Start()
-        {   
+        {
             var currentDir = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
             var index = currentDir.LastIndexOf("\\bin\\");
             var projectDir = currentDir.Remove(index);
@@ -40,8 +40,7 @@ namespace dotnetsheff.Api.FunctionalTests
             {
                 FileName = funcCliExe,
                 Arguments = $"host start -p {_port}",
-                WorkingDirectory =$@"{solutionDir}\src\dotnetsheff.Api\bin\{mode}\net462\",
-                WindowStyle = ProcessWindowStyle.Normal,
+                WorkingDirectory = $@"{solutionDir}\src\dotnetsheff.Api\bin\{mode}\netcoreapp2.1\",
                 UseShellExecute = false,
             };
 
@@ -51,7 +50,6 @@ namespace dotnetsheff.Api.FunctionalTests
             processStartInfo.EnvironmentVariables["MeetupApiKey"] = _meetupApiKey;
             processStartInfo.EnvironmentVariables["AcceptInvalidAlexaSignature"] = bool.TrueString;
             processStartInfo.EnvironmentVariables["AlexaSkillId"] = _alexaSkillId;
-
 
             _process = Process.Start(processStartInfo);
 
