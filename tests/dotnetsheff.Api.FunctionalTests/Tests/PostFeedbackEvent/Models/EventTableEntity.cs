@@ -1,4 +1,4 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
+﻿using Microsoft.Azure.Cosmos.Table;
 
 namespace dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent.Models
 {
