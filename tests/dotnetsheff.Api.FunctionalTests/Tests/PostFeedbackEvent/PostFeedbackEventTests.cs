@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using dotnetsheff.Api.FunctionalTests.Tests.PostFeedbackEvent.Models;
 using FluentAssertions;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.Azure.Cosmos.Table;
 using Newtonsoft.Json;
 using Xunit;
 
